@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+
+	<body>
+		<div class="lg-container">
+			<h1>ISchool线上答题登录</h1>
+			<form id="lg-form">
+
+				<div>
+					<label for="username">Username:</label>
+					<input type="text" name="email" id="username" placeholder="账号" />
+				</div>
+				
+
+				<div>
+					<label for="password">Password:</label>
+					<input type="password" name="passwd" id="password" placeholder="密码" />
+				</div>
+
+			</form>
+			<div>
+				<button class="btn" id="login">登录</button>
+			</div>
+			<div id="message"></div>
+		</div>
+	</body>
+	<script src="lib/easyui/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/easyui/jquery.easyui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		$(function() {
+			$('#login').on('click', function() {
+				login()
+
+			})
+
+			function login() {
+				var email = $('#username').val();
+				var pwd = $('#password').val();
+				$.ajax({
+					type: "get",
+					url: "https://www.jxufe-ischool.top/user/login",
+					dataType: 'jsonp',
+					data: {
+						email: email,
+						passwd: pwd,
+						type: "1"
+					},
+					success: function(data) {
+						console.log(data)
+						if(data.resStatus==404){
+							alert(data.resMsg)
+						}else{
+							$.cookie('loginStu',JSON.stringify(data.params.user),{path:'/'});
+							window.location.href = 'answer.html';
+						}
+					}
+				});
+			}
+		})
+	</script>
+
+</html>
